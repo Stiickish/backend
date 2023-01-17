@@ -63,6 +63,14 @@ public class Facade implements IFacade {
 
     }
 
+   /* @Override
+    public List<PerformanceDTO> getAssignedShow(String name){
+       TypedQuery<Guest> query = em.createQuery("SELECT g FROM Guest g WHERE g.name=:name",Guest.class);
+       query.setParameter("name",name);
+       Guest guest = query.getSingleResult();
+       return PerformanceDTO.getDTOs(guest.getPerformances());
+    }*/
+
     @Override
     public List<GuestDTO> getAllGuests() {
         EntityManager em = getEntityManager();
@@ -78,6 +86,7 @@ public class Facade implements IFacade {
 
     @Override
     public PerformanceDTO signUserToShow(String name, String guestName) {
+        EntityManager em = getEntityManager();
         TypedQuery<Performance> query = em.createQuery("SELECT p from Performance p WHERE p.name=:name", Performance.class);
         query.setParameter("name", name);
         Performance performances = (Performance) query.getResultList();
@@ -98,6 +107,7 @@ public class Facade implements IFacade {
 
     @Override
     public PerformanceDTO createNewPerformance(PerformanceDTO performanceDTO) {
+        EntityManager em = getEntityManager();
         Performance performance = new Performance(performanceDTO.getName(), performanceDTO.getDuration(), performanceDTO.getLocation(), performanceDTO.getStartDate(), performanceDTO.getStartTime());
 
         try {
@@ -112,13 +122,14 @@ public class Facade implements IFacade {
 
     @Override
     public FestivalDTO createNewFestival(FestivalDTO festivalDTO) {
+        EntityManager em = getEntityManager();
         Festival festival = new Festival(festivalDTO.getName(), festivalDTO.getCity(), festivalDTO.getStartDate(), festivalDTO.getDuration());
 
         try {
             em.getTransaction().begin();
             em.persist(festival);
             em.getTransaction().commit();
-        } finally {
+        }finally {
             em.close();
         }
         return new FestivalDTO(festival);
@@ -126,6 +137,7 @@ public class Facade implements IFacade {
 
     @Override
     public GuestDTO createNewGuest(GuestDTO guestDTO) {
+        EntityManager em = getEntityManager();
         Guest guest = new Guest(guestDTO.getName(), guestDTO.getPhone(), guestDTO.getEmail(), guestDTO.getStatus());
 
         try {

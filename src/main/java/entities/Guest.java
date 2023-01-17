@@ -3,10 +3,10 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
+@NamedQuery(name="Guest.deleteAllRows",query = "DELETE FROM Guest")
 @Table(name = "guest")
 public class Guest {
     @Id
@@ -34,16 +34,15 @@ public class Guest {
     @Column(name = "status", nullable = false, length = 45)
     private String status;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "festival_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "festival_id")
     private Festival festival;
 
     @ManyToMany
     @JoinTable(name = "performance_has_guest",
             joinColumns = @JoinColumn(name = "guest_id"),
-            inverseJoinColumns = @JoinColumn(name = "show_id"))
-    private List<Performance> shows = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "performance_id"))
+    private List<Performance> performances = new ArrayList<>();
 
     public Guest() {
     }
@@ -63,11 +62,10 @@ public class Guest {
         this.status = status;
     }
 
-    //Husk at bryde loopet
-    public void addShow(Performance show) {
-        this.shows.add(show);
-        if (!show.getGuests().contains(this)) {
-            show.addGuest(this);
+    public void addShow(Performance performance) {
+        this.performances.add(performance);
+        if (!performance.getGuests().contains(this)) {
+            performance.addGuest(this);
         }
     }
 
@@ -120,11 +118,24 @@ public class Guest {
         festival.getGuests().add(this);
     }
 
-    public List<Performance> getShows() {
-        return shows;
+    public List<Performance> getPerformances() {
+        return performances;
     }
 
-    public void setShows(List<Performance> shows) {
-        this.shows = shows;
+    public void setPerformances(List<Performance> performances) {
+        this.performances = performances;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Guest)) return false;
+        Guest guest = (Guest) o;
+        return Objects.equals(getId(), guest.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

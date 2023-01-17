@@ -6,9 +6,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@NamedQuery(name="Performance.deleteAllRows",query="DELETE FROM Performance ")
+@NamedQuery(name = "Performance.deleteAllRows", query = "DELETE FROM Performance ")
 @Table(name = "performance")
 public class Performance {
     @Id
@@ -71,8 +72,8 @@ public class Performance {
     //Husk at bryde loopet
     public void addGuest(Guest guest) {
         this.guests.add(guest);
-        if (!guest.getShows().contains(this)) {
-            guest.getShows().add(this);
+        if (!guest.getPerformances().contains(this)) {
+            guest.getPerformances().add(this);
         }
     }
 
@@ -130,5 +131,18 @@ public class Performance {
 
     public void setGuests(List<Guest> guests) {
         this.guests = guests;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Performance)) return false;
+        Performance that = (Performance) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

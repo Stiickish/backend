@@ -3,10 +3,7 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NamedQuery(name="Festival.deleteAllRows",query = "DELETE FROM Festival")
@@ -112,5 +109,18 @@ public class Festival {
 
     public void setGuests(List<Guest> guests) {
         this.guests = guests;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Festival)) return false;
+        Festival festival = (Festival) o;
+        return Objects.equals(getId(), festival.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
