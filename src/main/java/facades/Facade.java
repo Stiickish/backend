@@ -1,11 +1,13 @@
 package facades;
 
 import dtos.ShowDTO;
+import entities.Guest;
 import entities.Show;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Facade implements IFacade {
@@ -46,8 +48,16 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List getSpecificShow(String name) {
-        return null;
+    public List<ShowDTO> getAssignedShow(String name) {
+        List<ShowDTO> showDTOList = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        TypedQuery<Show> query = em.createQuery("SELECT s FROM Show s JOIN s.guests g WHERE g.name=:name", Show.class);
+        query.setParameter("name", name);
+        query.getResultList().forEach(show -> {
+            showDTOList.add(new ShowDTO(show));
+        });
+        return showDTOList;
+
     }
 
     @Override

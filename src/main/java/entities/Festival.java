@@ -3,10 +3,13 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name="Festival.deleteAllRows",query = "DELETE FROM Festival")
 @Table(name = "festival")
 public class Festival {
     @Id
@@ -35,7 +38,33 @@ public class Festival {
     private String duration;
 
     @OneToMany(mappedBy = "festival")
-    private Set<Guest> guests = new LinkedHashSet<>();
+    private List<Guest> guests = new ArrayList<>();
+
+
+    public Festival() {
+    }
+
+    public Festival(String name, String city, String startDate, String duration) {
+        this.name = name;
+        this.city = city;
+        this.startDate = startDate;
+        this.duration = duration;
+    }
+
+    public Festival(Integer id, String name, String city, String startDate, String duration) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.startDate = startDate;
+        this.duration = duration;
+    }
+
+    public void addGuest(Guest guest) {
+        this.guests.add(guest);
+        if (!guest.getFestival().equals(this)) {
+            guest.setFestival(this);
+        }
+    }
 
     public Integer getId() {
         return id;
@@ -77,12 +106,11 @@ public class Festival {
         this.duration = duration;
     }
 
-    public Set<Guest> getGuests() {
+    public List<Guest> getGuests() {
         return guests;
     }
 
-    public void setGuests(Set<Guest> guests) {
+    public void setGuests(List<Guest> guests) {
         this.guests = guests;
     }
-
 }

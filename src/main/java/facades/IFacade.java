@@ -6,7 +6,7 @@ public interface IFacade<T> {
 
     List<T> getAllShows();
 
-    List<T>getSpecificShow(String name);
+    List<T>getAssignedShow(String name);
 
     List<T>getGuest();
 

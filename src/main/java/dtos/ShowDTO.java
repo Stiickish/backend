@@ -1,5 +1,6 @@
 package dtos;
 
+import entities.Guest;
 import entities.Show;
 
 import javax.validation.constraints.NotNull;
@@ -47,6 +48,7 @@ public class ShowDTO implements Serializable {
         this.startDate = show.getStartDate();
         this.startTime = show.getStartTime();
     }
+
 
     public static List<ShowDTO> getDTOs(List<Show> shows) {
         List<ShowDTO> showDTOList = new ArrayList<>();

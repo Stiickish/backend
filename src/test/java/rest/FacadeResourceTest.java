@@ -3,6 +3,8 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.ShowDTO;
+import entities.Festival;
+import entities.Guest;
 import entities.Show;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
@@ -36,6 +38,9 @@ public class FacadeResourceTest {
     private static EntityManagerFactory emf;
 
     Show s1, s2;
+    Festival f1, f2;
+
+    Guest g1, g2;
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -70,16 +75,23 @@ public class FacadeResourceTest {
         s1 = new Show("Wallmans", "2 hours", "Copenhagen", "1/1/2023", "18:30");
         s2 = new Show("Nøddeknækkeren", "1.5 time", "DR byen", "23/1/2023", "17:00");
 
+        f1 = new Festival("Roskilde festival", "Roskilde", "30/6/2023", "30 dage");
+        f2 = new Festival("Copenhell", "Amager", "7/8/2023", "2 uger");
+
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Show.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Festival.deleteAllRows").executeUpdate();
             em.persist(s1);
             em.persist(s2);
+            em.persist(f1);
+            em.persist(f2);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
+
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
@@ -103,7 +115,7 @@ public class FacadeResourceTest {
     }
 
     @Test
-    public void getAllShows(){
+    public void getAllShows() {
         List<ShowDTO> showDTO;
 
         showDTO = given()
@@ -115,7 +127,20 @@ public class FacadeResourceTest {
 
         ShowDTO showDTO1 = new ShowDTO(s1);
         ShowDTO showDTO2 = new ShowDTO(s2);
-        assertThat(showDTO,containsInAnyOrder(showDTO1,showDTO2));
+        assertThat(showDTO, containsInAnyOrder(showDTO1, showDTO2));
 
+    }
+
+    @Test
+    void getAssignedShow() {
+        List<ShowDTO> showDTOS;
+
+        showDTOS = given()
+                .contentType("application/json")
+                .when()
+                .get("/moviefestival/assignedShow" + g1.getName())
+                .then()
+                .extract().body().jsonPath().getList("", ShowDTO.class);
+        assertThat(showDTOS, containsInAnyOrder(s1, s2));
     }
 }
