@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link entities.Guest} entity
  */
-public class ShowDTO implements Serializable {
+public class GuestDTO implements Serializable {
     private final Integer id;
     @Size(max = 45)
     @NotNull
@@ -27,7 +27,7 @@ public class ShowDTO implements Serializable {
     @NotNull
     private final String status;
 
-    public ShowDTO(Integer id, String name, String phone, String email, String status) {
+    public GuestDTO(Integer id, String name, String phone, String email, String status) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -35,7 +35,7 @@ public class ShowDTO implements Serializable {
         this.status = status;
     }
 
-    public ShowDTO(Guest guest) {
+    public GuestDTO(Guest guest) {
         this.id = guest.getId();
         this.name = guest.getName();
         this.phone = guest.getPhone();
@@ -43,10 +43,10 @@ public class ShowDTO implements Serializable {
         this.status = guest.getStatus();
     }
 
-    public static List<ShowDTO> getDTOs(List<Guest> guests) {
-        List<ShowDTO> guestDTOList = new ArrayList<>();
+    public static List<GuestDTO> getDTOs(List<Guest> guests) {
+        List<GuestDTO> guestDTOList = new ArrayList<>();
         guests.forEach(guest -> {
-            guestDTOList.add(new ShowDTO(guest));
+            guestDTOList.add(new GuestDTO(guest));
         });
         return guestDTOList;
     }
@@ -75,7 +75,7 @@ public class ShowDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ShowDTO entity = (ShowDTO) o;
+        GuestDTO entity = (GuestDTO) o;
         return Objects.equals(this.id, entity.id) &&
                 Objects.equals(this.name, entity.name) &&
                 Objects.equals(this.phone, entity.phone) &&
