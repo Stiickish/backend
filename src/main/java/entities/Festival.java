@@ -58,7 +58,7 @@ public class Festival {
         this.startDate = startDate;
         this.duration = duration;
     }
-
+//Husk at bryde loopet
     public void addGuest(Guest guest) {
         this.guests.add(guest);
         if (!guest.getFestival().equals(this)) {

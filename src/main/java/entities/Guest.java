@@ -4,9 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "guest")
@@ -42,10 +40,36 @@ public class Guest {
     private Festival festival;
 
     @ManyToMany
-    @JoinTable(name = "show_has_guest",
+    @JoinTable(name = "performance_has_guest",
             joinColumns = @JoinColumn(name = "guest_id"),
             inverseJoinColumns = @JoinColumn(name = "show_id"))
-    private List<Show> shows = new ArrayList<>();
+    private List<Performance> shows = new ArrayList<>();
+
+    public Guest() {
+    }
+
+    public Guest(Integer id, String name, String phone, String email, String status) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+    }
+
+    public Guest(String name, String phone, String email, String status) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+    }
+
+    //Husk at bryde loopet
+    public void addShow(Performance show) {
+        this.shows.add(show);
+        if (!show.getGuests().contains(this)) {
+            show.addGuest(this);
+        }
+    }
 
     public Integer getId() {
         return id;
@@ -93,13 +117,14 @@ public class Guest {
 
     public void setFestival(Festival festival) {
         this.festival = festival;
+        festival.getGuests().add(this);
     }
 
-    public List<Show> getShows() {
+    public List<Performance> getShows() {
         return shows;
     }
 
-    public void setShows(List<Show> shows) {
+    public void setShows(List<Performance> shows) {
         this.shows = shows;
     }
 }

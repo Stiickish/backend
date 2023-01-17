@@ -1,8 +1,7 @@
 package facades;
 
-import dtos.ShowDTO;
-import entities.Guest;
-import entities.Show;
+import dtos.PerformanceDTO;
+import entities.Performance;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,13 +33,13 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<ShowDTO> getAllShows() {
+    public List<PerformanceDTO> getAllShows() {
         EntityManager em = getEntityManager();
 
         try {
-            TypedQuery<Show> query = em.createQuery("SELECT s FROM Show s", Show.class);
-            List<Show> shows = query.getResultList();
-            return ShowDTO.getDTOs(shows);
+            TypedQuery<Performance> query = em.createQuery("SELECT s FROM Performance s", Performance.class);
+            List<Performance> shows = query.getResultList();
+            return PerformanceDTO.getDTOs(shows);
         } finally {
             em.close();
         }
@@ -48,13 +47,13 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<ShowDTO> getAssignedShow(String name) {
-        List<ShowDTO> showDTOList = new ArrayList<>();
+    public List<PerformanceDTO> getAssignedShow(String name) {
+        List<PerformanceDTO> showDTOList = new ArrayList<>();
         EntityManager em = getEntityManager();
-        TypedQuery<Show> query = em.createQuery("SELECT s FROM Show s JOIN s.guests g WHERE g.name=:name", Show.class);
+        TypedQuery<Performance> query = em.createQuery("SELECT s FROM Performance s JOIN s.guests g WHERE g.name=:name", Performance.class);
         query.setParameter("name", name);
         query.getResultList().forEach(show -> {
-            showDTOList.add(new ShowDTO(show));
+            showDTOList.add(new PerformanceDTO(show));
         });
         return showDTOList;
 

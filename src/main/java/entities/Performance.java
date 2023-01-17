@@ -5,14 +5,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@NamedQuery(name = "Show.deleteAllRows", query = "DELETE FROM Show")
-@Table(name = "`show`")
-public class Show {
+@NamedQuery(name="Performance.deleteAllRows",query="DELETE FROM Performance ")
+@Table(name = "performance")
+public class Performance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -44,16 +42,16 @@ public class Show {
     private String startTime;
 
     @ManyToMany
-    @JoinTable(name = "show_has_guest",
-            joinColumns = @JoinColumn(name = "show_id"),
+    @JoinTable(name = "performance_has_guest",
+            joinColumns = @JoinColumn(name = "performance_id"),
             inverseJoinColumns = @JoinColumn(name = "guest_id"))
     private List<Guest> guests = new ArrayList<>();
 
 
-    public Show() {
+    public Performance() {
     }
 
-    public Show(String name, String duration, String location, String startDate, String startTime) {
+    public Performance(String name, String duration, String location, String startDate, String startTime) {
         this.name = name;
         this.duration = duration;
         this.location = location;
@@ -61,7 +59,7 @@ public class Show {
         this.startTime = startTime;
     }
 
-    public Show(Integer id, String name, String duration, String location, String startDate, String startTime) {
+    public Performance(Integer id, String name, String duration, String location, String startDate, String startTime) {
         this.id = id;
         this.name = name;
         this.duration = duration;
@@ -70,6 +68,7 @@ public class Show {
         this.startTime = startTime;
     }
 
+    //Husk at bryde loopet
     public void addGuest(Guest guest) {
         this.guests.add(guest);
         if (!guest.getShows().contains(this)) {

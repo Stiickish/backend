@@ -1,9 +1,8 @@
 package facades;
 
-import dtos.FestivalDTO;
-import dtos.ShowDTO;
+import dtos.PerformanceDTO;
 import entities.Festival;
-import entities.Show;
+import entities.Performance;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,14 +20,10 @@ public class FacadeTest {
 
     private static Facade facade;
 
-    Show s1, s2;
+    Performance s1, s2;
     Festival f1, f2;
 
     public FacadeTest() {
-    }
-
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
     }
 
     @BeforeAll
@@ -40,8 +35,8 @@ public class FacadeTest {
     @BeforeEach
     void setup() {
         EntityManager em = emf.createEntityManager();
-        s1 = new Show("Wallmans", "2 hours", "Copenhagen", "1/1/2023", "18:30");
-        s2 = new Show("Nøddeknækkeren", "1.5 time", "DR byen", "23/1/2023", "17:00");
+        s1 = new Performance("Wallmans", "2 hours", "Copenhagen", "1/1/2023", "18:30");
+        s2 = new Performance("Nøddeknækkeren", "1.5 time", "DR byen", "23/1/2023", "17:00");
 
         f1 = new Festival("Roskilde festival", "Roskilde", "30/6/2023", "30 dage");
         f2 = new Festival("Copenhell", "Amager", "7/8/2023", "2 uger");
@@ -49,8 +44,8 @@ public class FacadeTest {
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Show.deleteAllRows").executeUpdate();
             em.createNamedQuery("Festival.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Performance.deleteAllRows").executeUpdate();
             em.persist(s1);
             em.persist(s2);
             em.persist(f1);
@@ -64,7 +59,7 @@ public class FacadeTest {
     @Test
     void getAllShows() {
         int expected = 2;
-        List<ShowDTO> showDTOList = facade.getAllShows();
+        List<PerformanceDTO> showDTOList = facade.getAllShows();
         assertEquals(expected, showDTOList.size());
     }
 

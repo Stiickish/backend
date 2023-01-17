@@ -1,7 +1,6 @@
 package dtos;
 
 import entities.Guest;
-import entities.Show;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link entities.Show} entity
+ * A DTO for the {@link entities.Guest} entity
  */
 public class ShowDTO implements Serializable {
     private final Integer id;
@@ -20,42 +19,36 @@ public class ShowDTO implements Serializable {
     private final String name;
     @Size(max = 45)
     @NotNull
-    private final String duration;
+    private final String phone;
     @Size(max = 45)
     @NotNull
-    private final String location;
+    private final String email;
     @Size(max = 45)
     @NotNull
-    private final String startDate;
-    @Size(max = 45)
-    @NotNull
-    private final String startTime;
+    private final String status;
 
-    public ShowDTO(Integer id, String name, String duration, String location, String startDate, String startTime) {
+    public ShowDTO(Integer id, String name, String phone, String email, String status) {
         this.id = id;
         this.name = name;
-        this.duration = duration;
-        this.location = location;
-        this.startDate = startDate;
-        this.startTime = startTime;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
     }
 
-    public ShowDTO(Show show) {
-        this.id = show.getId();
-        this.name = show.getName();
-        this.duration = show.getDuration();
-        this.location = show.getLocation();
-        this.startDate = show.getStartDate();
-        this.startTime = show.getStartTime();
+    public ShowDTO(Guest guest) {
+        this.id = guest.getId();
+        this.name = guest.getName();
+        this.phone = guest.getPhone();
+        this.email = guest.getEmail();
+        this.status = guest.getStatus();
     }
 
-
-    public static List<ShowDTO> getDTOs(List<Show> shows) {
-        List<ShowDTO> showDTOList = new ArrayList<>();
-        shows.forEach(show -> {
-            showDTOList.add(new ShowDTO(show));
+    public static List<ShowDTO> getDTOs(List<Guest> guests) {
+        List<ShowDTO> guestDTOList = new ArrayList<>();
+        guests.forEach(guest -> {
+            guestDTOList.add(new ShowDTO(guest));
         });
-        return showDTOList;
+        return guestDTOList;
     }
 
     public Integer getId() {
@@ -66,20 +59,16 @@ public class ShowDTO implements Serializable {
         return name;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getLocation() {
-        return location;
+    public String getEmail() {
+        return email;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getStartTime() {
-        return startTime;
+    public String getStatus() {
+        return status;
     }
 
     @Override
@@ -89,15 +78,14 @@ public class ShowDTO implements Serializable {
         ShowDTO entity = (ShowDTO) o;
         return Objects.equals(this.id, entity.id) &&
                 Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.duration, entity.duration) &&
-                Objects.equals(this.location, entity.location) &&
-                Objects.equals(this.startDate, entity.startDate) &&
-                Objects.equals(this.startTime, entity.startTime);
+                Objects.equals(this.phone, entity.phone) &&
+                Objects.equals(this.email, entity.email) &&
+                Objects.equals(this.status, entity.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, duration, location, startDate, startTime);
+        return Objects.hash(id, name, phone, email, status);
     }
 
     @Override
@@ -105,9 +93,8 @@ public class ShowDTO implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
                 "name = " + name + ", " +
-                "duration = " + duration + ", " +
-                "location = " + location + ", " +
-                "startDate = " + startDate + ", " +
-                "startTime = " + startTime + ")";
+                "phone = " + phone + ", " +
+                "email = " + email + ", " +
+                "status = " + status + ")";
     }
 }

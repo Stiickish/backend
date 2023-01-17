@@ -2,10 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.ShowDTO;
+import dtos.PerformanceDTO;
 import entities.Festival;
 import entities.Guest;
-import entities.Show;
+import entities.Performance;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -37,7 +37,7 @@ public class FacadeResourceTest {
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
-    Show s1, s2;
+    Performance s1, s2;
     Festival f1, f2;
 
     Guest g1, g2;
@@ -72,15 +72,15 @@ public class FacadeResourceTest {
     @BeforeEach
     public void setup() {
         EntityManager em = emf.createEntityManager();
-        s1 = new Show("Wallmans", "2 hours", "Copenhagen", "1/1/2023", "18:30");
-        s2 = new Show("Nøddeknækkeren", "1.5 time", "DR byen", "23/1/2023", "17:00");
+        s1 = new Performance("Wallmans", "2 hours", "Copenhagen", "1/1/2023", "18:30");
+        s2 = new Performance("Nøddeknækkeren", "1.5 time", "DR byen", "23/1/2023", "17:00");
 
         f1 = new Festival("Roskilde festival", "Roskilde", "30/6/2023", "30 dage");
         f2 = new Festival("Copenhell", "Amager", "7/8/2023", "2 uger");
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Show.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Performance.deleteAllRows").executeUpdate();
             em.createNamedQuery("Festival.deleteAllRows").executeUpdate();
             em.persist(s1);
             em.persist(s2);
@@ -116,31 +116,31 @@ public class FacadeResourceTest {
 
     @Test
     public void getAllShows() {
-        List<ShowDTO> showDTO;
+        List<PerformanceDTO> showDTO;
 
         showDTO = given()
                 .contentType("application/json")
                 .when()
                 .get("/moviefestival/shows")
                 .then()
-                .extract().body().jsonPath().getList("", ShowDTO.class);
+                .extract().body().jsonPath().getList("", PerformanceDTO.class);
 
-        ShowDTO showDTO1 = new ShowDTO(s1);
-        ShowDTO showDTO2 = new ShowDTO(s2);
+        PerformanceDTO showDTO1 = new PerformanceDTO(s1);
+        PerformanceDTO showDTO2 = new PerformanceDTO(s2);
         assertThat(showDTO, containsInAnyOrder(showDTO1, showDTO2));
 
     }
 
     @Test
     void getAssignedShow() {
-        List<ShowDTO> showDTOS;
+        List<PerformanceDTO> showDTOS;
 
         showDTOS = given()
                 .contentType("application/json")
                 .when()
                 .get("/moviefestival/assignedShow" + g1.getName())
                 .then()
-                .extract().body().jsonPath().getList("", ShowDTO.class);
+                .extract().body().jsonPath().getList("", PerformanceDTO.class);
         assertThat(showDTOS, containsInAnyOrder(s1, s2));
     }
 }
