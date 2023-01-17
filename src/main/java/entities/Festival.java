@@ -3,9 +3,7 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,10 +35,7 @@ public class Festival {
     private String duration;
 
     @OneToMany(mappedBy = "festival")
-    private List<Guest> guests = new ArrayList<>();
-
-    public Festival() {
-    }
+    private Set<Guest> guests = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -82,11 +77,12 @@ public class Festival {
         this.duration = duration;
     }
 
-    public List<Guest> getGuests() {
+    public Set<Guest> getGuests() {
         return guests;
     }
 
-    public void setGuests(List<Guest> guests) {
+    public void setGuests(Set<Guest> guests) {
         this.guests = guests;
     }
+
 }

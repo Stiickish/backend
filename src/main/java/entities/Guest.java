@@ -3,9 +3,7 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,10 +43,7 @@ public class Guest {
     @JoinTable(name = "show_has_guest",
             joinColumns = @JoinColumn(name = "guest_id"),
             inverseJoinColumns = @JoinColumn(name = "show_id"))
-    private List<Show> shows = new ArrayList<>();
-
-    public Guest() {
-    }
+    private Set<Show> shows = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -98,11 +93,12 @@ public class Guest {
         this.festival = festival;
     }
 
-    public List<Show> getShows() {
+    public Set<Show> getShows() {
         return shows;
     }
 
-    public void setShows(List<Show> shows) {
+    public void setShows(Set<Show> shows) {
         this.shows = shows;
     }
+
 }

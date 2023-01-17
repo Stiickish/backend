@@ -1,5 +1,6 @@
 package entities;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name = "Show.deleteAllRows", query = "DELETE FROM Show")
 @Table(name = "`show`")
 public class Show {
     @Id
@@ -47,7 +49,32 @@ public class Show {
             inverseJoinColumns = @JoinColumn(name = "guest_id"))
     private List<Guest> guests = new ArrayList<>();
 
+
     public Show() {
+    }
+
+    public Show(String name, String duration, String location, String startDate, String startTime) {
+        this.name = name;
+        this.duration = duration;
+        this.location = location;
+        this.startDate = startDate;
+        this.startTime = startTime;
+    }
+
+    public Show(Integer id, String name, String duration, String location, String startDate, String startTime) {
+        this.id = id;
+        this.name = name;
+        this.duration = duration;
+        this.location = location;
+        this.startDate = startDate;
+        this.startTime = startTime;
+    }
+
+    public void addGuest(Guest guest) {
+        this.guests.add(guest);
+        if (!guest.getShows().contains(this)) {
+            guest.getShows().add(this);
+        }
     }
 
     public Integer getId() {
