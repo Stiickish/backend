@@ -13,19 +13,19 @@ import java.util.Objects;
  * A DTO for the {@link entities.Guest} entity
  */
 public class GuestDTO implements Serializable {
-    private final Integer id;
+    private Integer id;
     @Size(max = 45)
     @NotNull
-    private final String name;
+    private String name;
     @Size(max = 45)
     @NotNull
-    private final String phone;
+    private String phone;
     @Size(max = 45)
     @NotNull
-    private final String email;
+    private String email;
     @Size(max = 45)
     @NotNull
-    private final String status;
+    private String status;
 
     public GuestDTO(Integer id, String name, String phone, String email, String status) {
         this.id = id;
@@ -69,6 +69,26 @@ public class GuestDTO implements Serializable {
 
     public String getStatus() {
         return status;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

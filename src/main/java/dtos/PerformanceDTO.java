@@ -13,22 +13,22 @@ import java.util.Objects;
  * A DTO for the {@link Performance} entity
  */
 public class PerformanceDTO implements Serializable {
-    private final Integer id;
+    private Integer id;
     @Size(max = 45)
     @NotNull
-    private final String name;
+    private String name;
     @Size(max = 45)
     @NotNull
-    private final String duration;
+    private String duration;
     @Size(max = 45)
     @NotNull
-    private final String location;
+    private String location;
     @Size(max = 45)
     @NotNull
-    private final String startDate;
+    private String startDate;
     @Size(max = 45)
     @NotNull
-    private final String startTime;
+    private String startTime;
 
     public PerformanceDTO(Integer id, String name, String duration, String location, String startDate, String startTime) {
         this.id = id;
@@ -79,6 +79,30 @@ public class PerformanceDTO implements Serializable {
 
     public String getStartTime() {
         return startTime;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     @Override

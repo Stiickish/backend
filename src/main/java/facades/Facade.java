@@ -85,7 +85,7 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public PerformanceDTO signUserToShow(String name, String guestName) {
+    public PerformanceDTO signGuestToShow(String name, String guestName) {
         EntityManager em = getEntityManager();
         TypedQuery<Performance> query = em.createQuery("SELECT p from Performance p WHERE p.name=:name", Performance.class);
         query.setParameter("name", name);
@@ -129,7 +129,7 @@ public class Facade implements IFacade {
             em.getTransaction().begin();
             em.persist(festival);
             em.getTransaction().commit();
-        }finally {
+        } finally {
             em.close();
         }
         return new FestivalDTO(festival);
@@ -148,5 +148,77 @@ public class Facade implements IFacade {
             em.close();
         }
         return new GuestDTO(guest);
+    }
+
+    @Override
+    public PerformanceDTO deleteAPerformance(Integer id) {
+        EntityManager em = getEntityManager();
+        Performance performance = em.find(Performance.class, id);
+
+        try {
+            em.getTransaction().begin();
+            em.remove(performance);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        return new PerformanceDTO(performance);
+    }
+
+    @Override
+    public FestivalDTO updateFestival(FestivalDTO festivalDTO) {
+        EntityManager em = getEntityManager();
+        Festival festival = em.find(Festival.class, festivalDTO.getId());
+
+        try {
+            em.getTransaction().begin();
+            festival.setCity(festivalDTO.getCity());
+            festival.setDuration(festivalDTO.getDuration());
+            festival.setName(festivalDTO.getName());
+            festival.setStartDate(festival.getStartDate());
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        return new FestivalDTO(festival);
+    }
+
+    @Override
+    public GuestDTO updateGuest(GuestDTO guestDTO) {
+        EntityManager em = getEntityManager();
+        Guest guest = em.find(Guest.class,guestDTO.getId());
+
+        try{
+            em.getTransaction().begin();
+            guest.setEmail(guestDTO.getEmail());
+            guest.setName(guestDTO.getName());
+            guest.setPhone(guestDTO.getPhone());
+            guest.setStatus(guestDTO.getStatus());
+        }finally {
+            em.close();
+        }
+        return new GuestDTO(guest);
+    }
+
+    @Override
+    public PerformanceDTO updatePerformance(PerformanceDTO performanceDTO) {
+
+        EntityManager em = getEntityManager();
+        Performance performance = em.find(Performance.class,performanceDTO.getId());
+
+        try{
+            em.getTransaction().begin();
+            performance.setDuration(performanceDTO.getDuration());
+            performance.setLocation(performanceDTO.getLocation());
+            performance.setDuration(performanceDTO.getDuration());
+            performance.setStartDate(performanceDTO.getStartDate());
+            performance.setStartTime(performance.getStartTime());
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+        return new PerformanceDTO(performance);
     }
 }

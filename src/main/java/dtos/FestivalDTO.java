@@ -13,19 +13,19 @@ import java.util.Objects;
  * A DTO for the {@link entities.Festival} entity
  */
 public class FestivalDTO implements Serializable {
-    private final Integer id;
+    private Integer id;
     @Size(max = 45)
     @NotNull
-    private final String name;
+    private String name;
     @Size(max = 45)
     @NotNull
-    private final String city;
+    private  String city;
     @Size(max = 45)
     @NotNull
-    private final String startDate;
+    private  String startDate;
     @Size(max = 45)
     @NotNull
-    private final String duration;
+    private  String duration;
 
     public FestivalDTO(Integer id, String name, String city, String startDate, String duration) {
         this.id = id;
@@ -62,6 +62,26 @@ public class FestivalDTO implements Serializable {
 
     public String getCity() {
         return city;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public String getStartDate() {

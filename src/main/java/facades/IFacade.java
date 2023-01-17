@@ -3,7 +3,6 @@ package facades;
 import dtos.FestivalDTO;
 import dtos.GuestDTO;
 import dtos.PerformanceDTO;
-import entities.Performance;
 
 import java.util.List;
 
@@ -15,13 +14,21 @@ public interface IFacade<T> {
 
     List<T> getAllGuests();
 
-    T signUserToShow(String name, String guestName);
+    T signGuestToShow(String name, String guestName);
 
     T createNewPerformance(PerformanceDTO performanceDTO);
 
     T createNewFestival(FestivalDTO festivalDTO);
 
     T createNewGuest(GuestDTO guestDTO);
+
+    T deleteAPerformance(Integer id);
+
+    T updateFestival(FestivalDTO festivalDTO);
+    T updateGuest(GuestDTO guestDTO);
+    T updatePerformance(PerformanceDTO performanceDTO);
+
+
 
 
 

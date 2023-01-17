@@ -50,8 +50,8 @@ public class FacadeResource {
     }
 
     @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("assign")
     public Response assignToShow(String jsonInput) throws API_Exception {
 
@@ -65,7 +65,7 @@ public class FacadeResource {
         } catch (Exception e) {
             throw new API_Exception("Something went wrong");
         }
-        return Response.ok().entity(GSON.toJson(facade.signUserToShow(performanceName, guestName))).build();
+        return Response.ok().entity(GSON.toJson(facade.signGuestToShow(performanceName, guestName))).build();
     }
 
     @POST
@@ -75,27 +75,69 @@ public class FacadeResource {
     public Response createNewShow(String jsonInput) {
         PerformanceDTO performanceDTO = GSON.fromJson(jsonInput, PerformanceDTO.class);
         performanceDTO = facade.createNewPerformance(performanceDTO);
-        return Response.ok().entity(GSON.toJson(facade.createNewPerformance(performanceDTO))).build();
+        return Response.ok().entity(GSON.toJson(performanceDTO)).build();
     }
 
     @POST
     @Path("createGuest")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response createNewUser(String jsonInput) {
         GuestDTO guestDTO = GSON.fromJson(jsonInput, GuestDTO.class);
         guestDTO = facade.createNewGuest(guestDTO);
-        return Response.ok().entity(GSON.toJson(facade.createNewGuest(guestDTO))).build();
+        return Response.ok().entity(GSON.toJson(guestDTO)).build();
     }
 
     @POST
-    @Path("createFestival")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response createNewFestival(String jsonInput){
-        FestivalDTO festivalDTO = GSON.fromJson(jsonInput,FestivalDTO.class);
+    @Path("/createFestival")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createNewFestival(String jsonInput) {
+        FestivalDTO festivalDTO = GSON.fromJson(jsonInput, FestivalDTO.class);
         festivalDTO = facade.createNewFestival(festivalDTO);
-        return Response.ok().entity(GSON.toJson(facade.createNewFestival(festivalDTO))).build();
+        return Response.ok().entity(GSON.toJson(festivalDTO)).build();
 
     }
+
+    @DELETE
+    @Path("/performance/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deleteAPerformance(@PathParam("id") int id) {
+        PerformanceDTO deleted = facade.deleteAPerformance(id);
+        return Response.ok().entity(GSON.toJson(deleted)).build();
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/festival/{id}")
+    public Response updateFestival(@PathParam("id") int id, String jsonInput) {
+        FestivalDTO festivalDTO = GSON.fromJson(jsonInput, FestivalDTO.class);
+        festivalDTO.setId(id);
+        festivalDTO = facade.updateFestival(festivalDTO);
+        return Response.ok().entity(GSON.toJson(festivalDTO)).build();
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/performance/{id}")
+    public Response updatePerformance(@PathParam("id") int id, String jsonInput) {
+        PerformanceDTO performanceDTO = GSON.fromJson(jsonInput, PerformanceDTO.class);
+        performanceDTO.setId(id);
+        performanceDTO = facade.updatePerformance(performanceDTO);
+        return Response.ok().entity(GSON.toJson(performanceDTO)).build();
+    }
+
+    @PUT
+    @Path("guest/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateGuest(@PathParam("id") int id, String jsonInput) {
+        GuestDTO guestDTO = GSON.fromJson(jsonInput, GuestDTO.class);
+        guestDTO.setId(id);
+        guestDTO = facade.updateGuest(guestDTO);
+        return Response.ok().entity(GSON.toJson(guestDTO)).build();
+    }
+
 }
