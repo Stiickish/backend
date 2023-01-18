@@ -27,7 +27,7 @@ public class FacadeResource {
     SecurityContext securityContext;
 
     @GET
-    @Path("/shows")
+    @Path("/performance")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllShows() {
         return Response.ok().entity(GSON.toJson(facade.getAllShows())).build();
